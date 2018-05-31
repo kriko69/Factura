@@ -18,6 +18,13 @@
         $status=$_GET['status'];
       }
     }
+    $tipo;
+    if((strcmp($data[4],'c')==0))
+    {
+        $tipo='cajero';
+    }else{
+        $tipo='administrador';
+    }
 
     function array_recibe($url_array) {
         $tmp = stripslashes($url_array);
@@ -67,15 +74,31 @@
                 }
                 else
                 {
-                    $.ajax({
-                        url:'modificar_script.php',
-                        type: 'POST',
-                        data:{id:id,nombre:nombre,apellido:apellido,carnet:carnet,ciudad:ciudad,tipo:tipo,pass1:pass1},
-                        success:function(data){
-                            console.log(data);
-                            location.assign("listar.php?modificar="+data);
-                        }
-                    });
+                    if(('<?php echo $data[0];?>'=='<?php echo $_SESSION['usuario'];?>') && ('<?php echo $tipo;?>'=='<?php echo strtolower($_SESSION['tipo']);?>') )
+                    //si el nombre de la base de datos al cargar == al de la sesion le paso el nombre al url
+                    {
+                        $.ajax({
+                            url:'modificar_script.php',
+                            type: 'POST',
+                            data:{id:id,nombre:nombre,apellido:apellido,carnet:carnet,ciudad:ciudad,tipo:tipo,pass1:pass1},
+                            success:function(data){
+                                console.log(data);
+                                location.assign("listar.php?modificar="+data+"&newname="+nombre+"&newtipo="+tipo); //newname sera el nombre para modificar a la sesion
+                                //si es que el usuario que edita es el ede la session
+                            }
+                        }); 
+                    }else{ //en caso de que no sea solo le paso la data (para los demas usuarios distintos al de la session)
+                        $.ajax({
+                            url:'modificar_script.php',
+                            type: 'POST',
+                            data:{id:id,nombre:nombre,apellido:apellido,carnet:carnet,ciudad:ciudad,tipo:tipo,pass1:pass1},
+                            success:function(data){
+                                console.log(data);
+                                location.assign("listar.php?modificar="+data); //newname sera el nombre para modificar a la sesion
+                                //si es que el usuario que edita es el ede la session
+                            }
+                        }); 
+                    }
                 }
             });
         });
@@ -173,7 +196,6 @@
         <div class="col-md-4 col-sm-12"></div>
     </div>
     <div id="pass-diferente"></div>
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     

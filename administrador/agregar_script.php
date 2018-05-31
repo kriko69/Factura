@@ -47,6 +47,7 @@
                 $tipo="a";
                 break;
         }
+        //$pass1=sha1($pass1);
         try
         {
             $conexion=new PDO($host,$user,$pass);

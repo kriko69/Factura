@@ -4,6 +4,11 @@
     {
         header('Location:../login/login.php');
     }
+    if(isset($_GET['newname']) && isset($_GET['newtipo'])) //si hay esta variable que es el mismo de la session
+    {
+        $_SESSION['usuario']=$_GET['newname']; //actualizar el usuario de la session
+        $_SESSION['tipo']=$_GET['newtipo'];
+    }
 ?>
 <!doctype html>
 <html lang="en">

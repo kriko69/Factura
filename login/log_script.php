@@ -2,6 +2,7 @@
 
     function loguearse($carnet,$password)
     {
+        //$password=sha1($password);
         try
         {
             //variables para pasar a la sesion
